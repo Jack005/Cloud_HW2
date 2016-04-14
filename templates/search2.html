@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+The Number of Tweets containing the word {{word}} is {{counter}}. Positive(green): {{p}}, Neutral(yellow): {{n}}, Negative(red): {{ne}}.
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+</head> 
+<body>
+  <div id="map" style="width: 1000x; height: 700px;"></div>
+
+  <script type="text/javascript">
+    var locations = {{posts|tojson}};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: new google.maps.LatLng(33.92, -0.25),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    function addInfoWindow(marker, message) {
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: message
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open(map, marker);
+            });
+        }
+    var i;
+    for (i = 0; i < locations.length; i++) { 
+      var marker = new google.maps.Marker({map: map, position: new google.maps.LatLng(locations[i][0][1], locations[i][0][0]), icon: locations[i][2], clickable: true});
+      addInfoWindow(marker, '"' + locations[i][1] + '"');
+
+    }
+  </script>
+</body>
+</html>
